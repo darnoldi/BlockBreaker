@@ -7,10 +7,12 @@ public class ScriptBlock : MonoBehaviour
 {
     // config params
     [SerializeField] int blockScore = 1;
-    [SerializeField] int maxHits;
+    
     [SerializeField] AudioClip blockBreakingSound;
     [SerializeField] GameObject blockDestroyVFX;
     [SerializeField] Sprite[] hitSprites;
+
+    int maxHits;
 
 
     //cached references
@@ -23,7 +25,7 @@ public class ScriptBlock : MonoBehaviour
     private void Start()
     {
         gameStatus = FindObjectOfType<GameSession>();
-
+        maxHits = hitSprites.Length + 1;
         CountBreakableBlocks();
     }
 
@@ -60,7 +62,14 @@ public class ScriptBlock : MonoBehaviour
     private void ShowNextHitSprite()
     {
         int spriteIndex = timesHit - 1;
-        GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
+        if (hitSprites[spriteIndex] != null)
+        {
+            GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
+        }
+        else
+        {
+            Debug.LogError("Block sprite is missing from array for object " + gameObject.name);
+        }
     }
 
     private void DestroyBlock()
