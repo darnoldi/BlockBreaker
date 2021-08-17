@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3206835549177526090}
   m_Layer: 0
   m_Name: Red Gem
-  m_TagString: Untagged
+  m_TagString: Breakable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -124,8 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockScore: 1
+  maxHits: 1
   blockBreakingSound: {fileID: 8300000, guid: dd810e17590715d4d8693f3fd95f7745, type: 3}
   blockDestroyVFX: {fileID: 100000, guid: 7d846c02296ef4dc4abff04ce3e5262c, type: 3}
+  timesHit: 0
 --- !u!60 &3206835549177526090
 PolygonCollider2D:
   m_ObjectHideFlags: 0
