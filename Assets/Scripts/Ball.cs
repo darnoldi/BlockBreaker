@@ -12,10 +12,12 @@ public class Ball : MonoBehaviour
     [SerializeField] float launchX = 2f;
     [SerializeField] float launchY = 15f;
     [SerializeField] AudioClip[] ballSounds;
+    [SerializeField] float randomBounceFactor = 0.2f;
 
     public Boolean isLaunched = false;
 
     AudioSource myAudioSource;
+    Rigidbody2D myRigidbody2D;
 
     Vector2 paddleToBallVector;
 
@@ -24,6 +26,7 @@ public class Ball : MonoBehaviour
     {
         myAudioSource = GetComponent<AudioSource>();
         paddleToBallVector = new Vector2(ballX, ballY);
+        myRigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -41,7 +44,7 @@ public class Ball : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            GetComponent<Rigidbody2D>().velocity = new Vector2(launchX, launchY);
+            myRigidbody2D.velocity = new Vector2(launchX, launchY);
             isLaunched = true;
         }
     }
@@ -53,12 +56,22 @@ public class Ball : MonoBehaviour
        
     }
 
+    public void Reset()
+    {
+        isLaunched = false;
+        LockBallToPaddle();
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Vector2 velocityTweak = new Vector2(UnityEngine.Random.Range(-randomBounceFactor, randomBounceFactor),
+                                            UnityEngine.Random.Range(-randomBounceFactor, randomBounceFactor));
+
         //Debug.Log( collision.gameObject.name.ToString());
         if (isLaunched)
         {
+            myRigidbody2D.velocity += velocityTweak;
             if (!collision.gameObject.name.ToString().Contains("Block") || !collision.gameObject.name.ToString().Contains("Gem"))
             {
                 AudioClip clip = ballSounds[UnityEngine.Random.Range(0, ballSounds.Length)];

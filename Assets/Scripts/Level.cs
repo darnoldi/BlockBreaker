@@ -6,12 +6,16 @@ public class Level : MonoBehaviour
 {
 
     [SerializeField] int breakableBlocks;
-
+    [SerializeField] Ball ball;
+    [SerializeField] Paddle paddle;
+ 
     SceneLoader sceneLoader;
+    GameSession gameSession;
 
     private void Start()
     {
         sceneLoader = FindObjectOfType<SceneLoader>();
+        gameSession = FindObjectOfType<GameSession>();
     }
 
     public void CountBlocks ()
@@ -27,5 +31,16 @@ public class Level : MonoBehaviour
         {
             sceneLoader.LoadNextScene();
         }
+    }
+
+
+    public void LoseLife ()
+    {
+        if (gameSession.LoseLife() > 0)
+        {
+            paddle.Reset();
+            ball.Reset();
+        }
+      
     }
 }

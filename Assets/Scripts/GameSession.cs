@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameSession : MonoBehaviour
 {
     [Range(0.1f, 10f)] [SerializeField] float gameSpeed = 1f;
     [SerializeField] int currentScore = 0;
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI livesText;
+    [SerializeField] int currentLives = 3; 
 
 
     //AWAKE happens first in init
@@ -30,7 +33,7 @@ public class GameSession : MonoBehaviour
     void Start()
     {
         scoreText.text = currentScore.ToString();
-
+        livesText.text = "Lives:" + currentLives.ToString();
     }
 
     // Update is called once per frame
@@ -45,9 +48,22 @@ public class GameSession : MonoBehaviour
         scoreText.text = currentScore.ToString();
     }
 
+    public int LoseLife()
+    {
+        currentLives--;
+        
+        if (currentLives <= 0)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
+        livesText.text = "Lives:" + currentLives.ToString();
+        return currentLives;
+    }
+
     public void ResetGame()
     {
         Destroy(gameObject);
+       // currentLives = 3;
     }
 
 }
